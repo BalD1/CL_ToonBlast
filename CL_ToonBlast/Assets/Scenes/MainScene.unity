@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 450192175}
   - component: {fileID: 450192176}
   m_Layer: 0
-  m_Name: GridTest
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,15 +194,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 450192174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119f6d58ffef77046ae7991c6f17d23a, type: 3}
+  m_Script: {fileID: 11500000, guid: 72687e23719ec7b4187659ab4e66c63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridWidth: 9
   gridHeight: 9
   cellsSize: 0.5
   cell_PF: {fileID: 6273235852457989440, guid: 3a91342347917eb43ad42b763b0351e8, type: 3}
-  updateInEditor: 0
-  cleanup: 0
+  cellsContainer: {fileID: 450192175}
+  drawDebug: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
