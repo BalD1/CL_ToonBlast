@@ -1,3 +1,5 @@
+using BalDUtilities.CreateUtils;
+using System.Text;
 using UnityEngine;
 
 public class Grid<TGridObject>
@@ -22,11 +24,12 @@ public class Grid<TGridObject>
 
         gridArray = new TGridObject[width, height];
 
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
-                gridArray[x, y] = createGridObject(x, y);
+                //CreateText.CreateWorldText($"{x}, {y}", GetWorldPosition(x,y) + new Vector3(cellSize * .5f, cellSize * .5f), 10);
+                gridArray[y,x] = createGridObject(y,x);
             }
         }
 
@@ -41,7 +44,7 @@ public class Grid<TGridObject>
     /// <returns>World Position in <see cref="Vector3"/></returns>
     public Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x,y) * cellSize + originPosition;
+        return new Vector3(y,x) * cellSize + originPosition;
     }
 
     /// <summary>
@@ -53,8 +56,9 @@ public class Grid<TGridObject>
     /// <param name="y"></param>
     public void GetXY(Vector3 worldPosition, out int x, out int y)
     {
-        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
-        y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
+        y = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
+        x = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
+        x = width - x - 1;
     }
 
     /// <summary>
@@ -68,7 +72,7 @@ public class Grid<TGridObject>
     {
         if (IsOutOfBounds(x, y)) return;
  
-        gridArray[x, y] = value;
+        gridArray[width - x - 1, y] = value;
         
         D_onGridValueChanged?.Invoke(x, y);
     }
@@ -95,7 +99,7 @@ public class Grid<TGridObject>
     {
         if (IsOutOfBounds(x, y)) return default;
 
-        return gridArray[x, y];
+        return gridArray[width - x - 1, y];
     }
     /// <summary>
     /// Get the value of the cell in <paramref name="worldPosition"/> position
@@ -149,5 +153,20 @@ public class Grid<TGridObject>
 
         Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height), color, time);
         Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height), color, time);
+    }
+
+    public override string ToString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                sb.AppendLine($"[{x}, {y} : {GetValue(x, y)}");
+            }
+        }
+
+        return sb.ToString();
     }
 }

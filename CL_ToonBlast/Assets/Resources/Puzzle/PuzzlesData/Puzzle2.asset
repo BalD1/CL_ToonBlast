@@ -1,0 +1,258 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26cf16cf44fdcbf4bb3802922a87c2fd, type: 3}
+  m_Name: Puzzle2
+  m_EditorClassIdentifier: 
+  serializable:
+  - Index0: 0
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 0
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 0
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 0
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 0
+    Index1: 4
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 0
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 0
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 0
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 0
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 1
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 1
+    Index1: 1
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 2
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 4
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 6
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 7
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 1
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 2
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 2
+    Index1: 1
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 2
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 4
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 6
+    Element: {fileID: 11400000, guid: befe0920c3146ed4a95f4d4e791b645e, type: 2}
+  - Index0: 2
+    Index1: 7
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 2
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 3
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 3
+    Index1: 1
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 2
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 4
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 6
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 7
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 3
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 4
+    Index1: 4
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 4
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 4
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 3
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 5
+    Index1: 4
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 5
+    Element: {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - Index0: 5
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 5
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 3
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 4
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 5
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 6
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 3
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 4
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 5
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 7
+    Index1: 8
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 0
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 1
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 2
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 3
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 4
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 5
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 6
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 7
+    Element: {fileID: 0}
+  - Index0: 8
+    Index1: 8
+    Element: {fileID: 0}

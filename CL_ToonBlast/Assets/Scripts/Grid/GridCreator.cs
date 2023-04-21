@@ -1,21 +1,21 @@
-using BalDUtilities.MouseUtils;
+using UnityEditor;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class GridCreator : MonoBehaviour
 {
-    private Grid<GameObject> grid;
+    [Header("Grid Proprieties")]
 
     [SerializeField] private int gridWidth;
     [SerializeField] private int gridHeight;
-    [SerializeField] private float cellsSize;
-
-    [SerializeField] private GameObject[,] gridCells;
-
-    [SerializeField] private GameObject cell_PF;
+    [SerializeField] private float cellSize;
 
     [SerializeField] private Transform cellsContainer;
 
+    private Grid<int> grid;
+
 #if UNITY_EDITOR
+    [Header("Editor")]
     [SerializeField] private bool drawDebug;
 #endif
 
@@ -24,36 +24,25 @@ public class GridCreator : MonoBehaviour
         cellsContainer = this.transform;
     }
 
-    protected virtual void Start()
+    private void OnValidate()
     {
         CreateGrid();
     }
 
     protected virtual void CreateGrid(bool drawDebug = false)
     {
-        grid = new Grid<GameObject>(gridWidth, gridHeight, cellsSize, cellsContainer.position - new Vector3(.5f, .5f) * cellsSize,
-        (x, y) =>
-        {
-            GameObject cell = cell_PF.Create(new Vector3(x, y) + cellsContainer.position);
-            Transform cellTransform = cell.transform;
+        grid = new Grid<int>(gridWidth, gridHeight, cellSize, cellsContainer.transform.position, (x, y) => -1);
+    }
 
-            cellTransform.SetParent(cellsContainer, false);
-            cellTransform.localScale = new Vector3(cellsSize, cellsSize);
-            cellTransform.position *= cellsSize;
-
-            GridCell cellScript = cell.GetComponent<GridCell>();
-            cellScript.Setup(x, y);
-
-            if (GameSettings.UnityEditor) cell.name = string.Format($"Cell [ {x}, {y} ]");
-
-            return cell;
-        }, drawDebug);
+    private void Start()
+    {
+        CreateGrid();
     }
 
     protected virtual void Update()
     {
 #if UNITY_EDITOR
-        if (drawDebug) grid.DrawDebug();
+        grid.DrawDebug();
 #endif
     }
 }
