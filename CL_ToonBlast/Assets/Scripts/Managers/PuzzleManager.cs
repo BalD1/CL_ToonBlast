@@ -2,6 +2,7 @@ using BalDUtilities.CreateUtils;
 using BalDUtilities.MouseUtils;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -24,6 +25,17 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
     [SerializeField] private SO_PuzzleData puzzle;
 
     [SerializeField] private GameObject block_PF;
+
+    [SerializeField] private TextMeshProUGUI scoreDisplay;
+
+    [SerializeField] private int basePointsForBlocksDestroy = 50;
+    private int currentScore;
+
+    private int currentMultiplier;
+
+    // just in case
+    [SerializeField] private float click_COOLDOWN = .5f;
+    private float click_TIMER;
 
     private struct S_NeighboursWithXY
     {
@@ -73,20 +85,7 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
             {
                 SO_BasePuzzleBlockData blockData = puzzle.BlocksData[x, y];
 
-                if (blockData != null)
-                {
-                    GameObject blockObj = block_PF.Create(cellsContainer);
-                    blockObj.transform.localScale = new Vector3(cellSize, cellSize);
-
-                    SetPositionOfBlock(x, y, blockObj.transform);
-
-                    GridBlock gridBlock = blockObj.GetComponent<GridBlock>();
-                    gridBlock.SetData(blockData);
-
-                    gridBlock.SetName(x, y);
-
-                    PuzzleGrid.SetValue(x, y, gridBlock);
-                }
+                if (blockData != null) CreateBlock(x, y, blockData, Vector2.zero);
             }
         }
     }
@@ -98,6 +97,7 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
 
     protected virtual void Update()
     {
+        if (click_TIMER > 0) click_TIMER -= Time.deltaTime;
 #if UNITY_EDITOR
         if (drawGridDebug) PuzzleGrid?.DrawDebug();
 #endif
@@ -105,6 +105,11 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (click_TIMER > 0) return;
+        click_TIMER = click_COOLDOWN;
+
+        currentMultiplier = 0;
+
         // Get the position of the mouse click
         PuzzleGrid.GetXY(MousePosition.GetMouseWorldPosition(), out int x, out int y);
 
@@ -133,11 +138,19 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
                     item.value.Damage();
                 }
 
-                SpawnNewBlocks();
                 MakeBlocksFall();
+                SpawnNewBlocks();
             }
             else clickedOnBlock.OnCantClickFeedback();
         }
+    }
+
+    public void OnDestroyedBlock()
+    {
+        currentMultiplier++;
+        currentScore += basePointsForBlocksDestroy * currentMultiplier;
+
+        scoreDisplay.text = currentScore.ToString();
     }
 
     private void CheckNeighboursOfIndex(int x, int y, ref List<S_NeighboursWithXY> neighbours, SO_ClickableBlockData originData)
@@ -202,14 +215,35 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
         for (int x = 0; x < GridWidth; x++)
         {
             int y = GridHeight - 1;
-            int amountToSpawn = 0;
 
             while(PuzzleGrid.GetValue(x, y) == null)
             {
+                // spawn it outside of grid
+                Vector2 spawnPos = PuzzleGrid.GetWorldPosition(x, y + (GridHeight - 1));
+
+                CreateBlock(x, y, AllClickableBlocks.GetBlock(), spawnPos);
+
                 y--;
-                amountToSpawn++;
             }
         }
+    }
+
+    private void CreateBlock(int x, int y, SO_BasePuzzleBlockData blockData, Vector2 spawnPos)
+    {
+        GameObject blockObj = block_PF.Create(cellsContainer);
+        blockObj.transform.position = spawnPos;
+        blockObj.transform.localScale = new Vector3(cellSize, cellSize);
+
+        SetPositionOfBlock(x, y, blockObj.transform);
+
+        GridBlock gridBlock = blockObj.GetComponent<GridBlock>();
+        gridBlock.SetData(blockData);
+
+        gridBlock.SetName(x, y);
+
+        gridBlock.D_onDeath += OnDestroyedBlock;
+
+        PuzzleGrid.SetValue(x, y, gridBlock);
     }
 
     private void SetPositionOfBlock(int x, int y, Transform blockTransform)

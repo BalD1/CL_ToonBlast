@@ -14,6 +14,9 @@ public class GridBlock : MonoBehaviour
 
     private bool isTweening;
 
+    public delegate void D_OnDeath();
+    public D_OnDeath D_onDeath;
+
     private void Reset()
     {
         SpriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
@@ -56,6 +59,7 @@ public class GridBlock : MonoBehaviour
     private void OnDeath()
     {
         LeanTween.scale(this.gameObject, Vector3.zero, .1f).setOnComplete( () => Destroy(this.gameObject));
+        D_onDeath?.Invoke();
         
     }
 

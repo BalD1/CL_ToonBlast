@@ -22,6 +22,8 @@ public class SO_BlocksArray : ScriptableObject
             BlocksData[i].SetID(i);
         }
 
-        EditorUtility.SetDirty(this);
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this); 
+#endif
     }
 }

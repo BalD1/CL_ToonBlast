@@ -18,6 +18,8 @@ public class SO_BasePuzzleBlockData : ScriptableObject
     public void SetID(int id)
     {
         ID = id;
-        EditorUtility.SetDirty(this);
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this); 
+#endif
     }
 }
