@@ -1,7 +1,8 @@
 using BalDUtilities.EditorUtils;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
+using System.Linq;
+using System;
 
 public class WINDOW_PuzzleMaker : EditorWindow
 {
@@ -13,6 +14,7 @@ public class WINDOW_PuzzleMaker : EditorWindow
     private const int buttonHeight = 40;
 
     [SerializeField] private SO_PuzzleData currentPuzzle;
+    [SerializeField] private SO_RandomBlock randomBlock;
 
     [SerializeField] private Texture emptyTexture;
 
@@ -50,6 +52,20 @@ public class WINDOW_PuzzleMaker : EditorWindow
         currentPuzzle = EditorGUILayout.ObjectField(currentPuzzle, typeof(SO_PuzzleData), false) as SO_PuzzleData;
         if (currentPuzzle == null) return;
 
+        randomBlock = EditorGUILayout.ObjectField(randomBlock, typeof(SO_RandomBlock), false) as SO_RandomBlock;
+
+        if (randomBlock == null) randomBlock = Array.Find(blocksArray.BlocksData, x => x is SO_RandomBlock) as SO_RandomBlock;
+        else if (GUILayout.Button("fill with randoms"))
+        {
+            for (int x = 0; x < PuzzleManager.GridWidth; x++)
+            {
+                for (int y = 0; y < PuzzleManager.GridHeight; y++)
+                {
+                    currentPuzzle.SetBlockDataAt(x, y, randomBlock);
+                }
+            }
+        }
+
         Undo.RecordObject(currentPuzzle, "Puzzle");
 
         for (int x = 0; x < PuzzleManager.GridWidth; x++)
@@ -62,12 +78,16 @@ public class WINDOW_PuzzleMaker : EditorWindow
 
                 Texture buttonTexture;
 
-                SO_BasePuzzleBlockData currentBlockData = currentPuzzle.BlocksData[x, y];
+                // the grid is built from the bottop to the top; 0,0 is at the bottom left, which
+                // is the inverse of the array, so we just need to display it upside down.
+                Vector2Int trueIdx = new Vector2Int(y, currentPuzzle.BlocksData.GetLength(0) - x - 1);
+
+                SO_BasePuzzleBlockData currentBlockData = currentPuzzle.BlocksData[trueIdx.x, trueIdx.y];
                 if (currentBlockData == null || currentBlockData.BlockSprite == null) buttonTexture = emptyTexture;
                 else buttonTexture = currentBlockData.BlockSprite.texture;
 
                 SO_BasePuzzleBlockData newBlock = EditorGUILayout.ObjectField(currentBlockData, typeof(SO_BasePuzzleBlockData), false, GUILayout.MaxWidth(20)) as SO_BasePuzzleBlockData;
-                if (newBlock != null) currentPuzzle.SetBlockDataAt(x, y, newBlock);
+                if (newBlock != null) currentPuzzle.SetBlockDataAt(trueIdx.x, trueIdx.y, newBlock);
 
                 if (GUILayout.Button(buttonTexture, GUILayout.MaxWidth(buttonWidth), GUILayout.MaxHeight(buttonHeight)))
                 {
@@ -80,7 +100,7 @@ public class WINDOW_PuzzleMaker : EditorWindow
                     }
                     else newBlock = blocksArray.BlocksData[nextID];
 
-                    currentPuzzle.SetBlockDataAt(x, y, newBlock);
+                    currentPuzzle.SetBlockDataAt(trueIdx.x, trueIdx.y, newBlock);
                 }
 
 

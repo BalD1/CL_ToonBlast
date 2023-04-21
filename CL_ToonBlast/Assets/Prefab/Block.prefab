@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BlockData>k__BackingField: {fileID: 0}
-  spriteRenderer: {fileID: 837246833872142861}
+  <SpriteRenderer>k__BackingField: {fileID: 837246833872142861}
+  <CurrentHP>k__BackingField: 0
+  wasChecked: 0
 --- !u!1 &837246833872142851
 GameObject:
   m_ObjectHideFlags: 0

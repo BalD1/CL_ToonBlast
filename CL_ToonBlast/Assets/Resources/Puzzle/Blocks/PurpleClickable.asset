@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 31aac861d48bc2c4b8577c81e99d4151, type: 3}
-  m_Name: BlueClickable
+  m_Name: PurpleClickable
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Blue Cl
-  <ID>k__BackingField: 0
-  <BlockSprite>k__BackingField: {fileID: 21300000, guid: f5631703ad24c7a45a753d0404b5c55a, type: 3}
+  <Name>k__BackingField: Purple Cl
+  <ID>k__BackingField: 2
+  <BlockSprite>k__BackingField: {fileID: 21300000, guid: 1bbca740665ed914f9f1a72eebb535ac, type: 3}
   <IsStatic>k__BackingField: 0
   <MaxHP>k__BackingField: 1
   <MinRequiredNeighborsToBreak>k__BackingField: 1

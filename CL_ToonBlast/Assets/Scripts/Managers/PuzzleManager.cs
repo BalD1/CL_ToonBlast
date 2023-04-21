@@ -19,6 +19,7 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
     [SerializeField] private Transform cellsContainer;
 
     [field: SerializeField] public SO_BlocksArray BlocksData { get; private set; }
+    [field: SerializeField] public SO_RandomBlock AllClickableBlocks { get; private set; }
 
     [SerializeField] private SO_PuzzleData puzzle;
 
@@ -70,18 +71,19 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
         {
             for (int y = 0; y < GridHeight; y++)
             {
-                SO_BasePuzzleBlockData block = puzzle.BlocksData[x, y];
+                SO_BasePuzzleBlockData blockData = puzzle.BlocksData[x, y];
 
-                if (block != null)
+                if (blockData != null)
                 {
                     GameObject blockObj = block_PF.Create(cellsContainer);
                     blockObj.transform.localScale = new Vector3(cellSize, cellSize);
 
                     SetPositionOfBlock(x, y, blockObj.transform);
-                    blockObj.GetComponent<GridBlock>().SetData(block);
 
                     GridBlock gridBlock = blockObj.GetComponent<GridBlock>();
-                    gridBlock.SetData(block);
+                    gridBlock.SetData(blockData);
+
+                    gridBlock.SetName(x, y);
 
                     PuzzleGrid.SetValue(x, y, gridBlock);
                 }
@@ -92,7 +94,6 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
     private void Start()
     {
         CreateGrid();
-        //MakeBlocksFall();
     }
 
     protected virtual void Update()
@@ -106,7 +107,6 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
     {
         // Get the position of the mouse click
         PuzzleGrid.GetXY(MousePosition.GetMouseWorldPosition(), out int x, out int y);
-        Debug.Log(x + " " + y);
 
         if (PuzzleGrid.IsOutOfBounds(x, y)) return;
 
@@ -118,28 +118,12 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
         SO_BasePuzzleBlockData blockData = clickedOnBlock.BlockData;
         if (blockData == null) return;
 
-        int x2 = x;
-        while (x2 > 0)
-        {
-            if (PuzzleGrid.GetValue(x2 - 1, y) == null) x2--;
-            else break;
-        }
-
-        PuzzleGrid.SetValue(x2, y, clickedOnBlock);
-        Debug.Log(PuzzleGrid.GetValue(x2, y));
-        PuzzleGrid.SetValue(x, y, null);
-
-        clickedOnBlock.transform.position = PuzzleGrid.GetWorldPosition(x2, y) + new Vector3(cellSize * .5f, cellSize * .5f);
-
-        return;
-
         // check if the block is a clickable
         SO_ClickableBlockData clickableBlockData = blockData as SO_ClickableBlockData;
         if (clickableBlockData != null)
         {
             List<S_NeighboursWithXY> neighbours = new List<S_NeighboursWithXY>();
             CheckNeighboursOfIndex(x, y, ref neighbours, clickableBlockData);
-
             // if there is enough neighbours, destroy the blocks
             if (neighbours.Count > clickableBlockData.MinRequiredNeighborsToBreak)
             {
@@ -149,8 +133,10 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
                     item.value.Damage();
                 }
 
+                SpawnNewBlocks();
                 MakeBlocksFall();
             }
+            else clickedOnBlock.OnCantClickFeedback();
         }
     }
 
@@ -175,36 +161,60 @@ public class PuzzleManager : Singleton<PuzzleManager>, IPointerDownHandler
 
     private void MakeBlocksFall()
     {
-        return; 
-        for (int x = 1; x < GridWidth; x++)
+        for (int x = 0; x < GridWidth; x++)
         {
-            // no need to check the bottom line
-            for (int y = 0; y < GridHeight; y++)
+            CheckRow(x);
+        }
+    }
+
+    private void CheckRow(int x)
+    {
+        // no need to check the bottom line
+        for (int y = 1; y < GridHeight; y++)
+        {
+            GridBlock block = PuzzleGrid.GetValue(x, y);
+            if (block == null) continue;
+            if (block.BlockData.IsStatic) continue;
+
+            // check for every cells beneath the current
+            int yBeneath = y;
+            while (yBeneath > 0)
             {
-                GridBlock block = PuzzleGrid.GetValue(x, y);
-                if (block == null) continue;
-                if (block.BlockData.IsStatic) continue;
+                if (PuzzleGrid.GetValue(x, yBeneath - 1) == null) yBeneath--;
+                else break;
+            }
 
-                Debug.Log(block.BlockData.BlockSprite.texture.ToString() + " " + x + " "+ y);
+            if (y == yBeneath) continue;
 
-                // check for every cells beneath the current
-                int xBeneath = x - 1;
-                while (xBeneath > 0 && PuzzleGrid.GetValue(xBeneath, y) == null)
-                {
-                    xBeneath--;
-                }
+            PuzzleGrid.SetValue(x, yBeneath, block);
+            PuzzleGrid.SetValue(x, y, null);
 
-                PuzzleGrid.SetValue(xBeneath, y, block);
-                PuzzleGrid.SetValue(x, y, null);
+            SetPositionOfBlock(x, yBeneath, block.transform);
 
-                SetPositionOfBlock(xBeneath, y, block.transform);
+#if UNITY_EDITOR
+            block.GetComponent<GridBlock>().SetName(x, yBeneath);
+#endif
+        }
+    }
+
+    private void SpawnNewBlocks()
+    {
+        for (int x = 0; x < GridWidth; x++)
+        {
+            int y = GridHeight - 1;
+            int amountToSpawn = 0;
+
+            while(PuzzleGrid.GetValue(x, y) == null)
+            {
+                y--;
+                amountToSpawn++;
             }
         }
     }
 
     private void SetPositionOfBlock(int x, int y, Transform blockTransform)
     {
-        int blockPosX = GridHeight - (x % GridHeight) - 1;
-        blockTransform.position = PuzzleGrid.GetWorldPosition(blockPosX, y) + new Vector3(cellSize * .5f, cellSize * .5f);
+        Vector2 targetPosition = PuzzleGrid.GetWorldPosition(x, y) + new Vector3(cellSize * .5f, cellSize * .5f);
+        blockTransform.LeanMove(targetPosition, .25f);
     }
 }

@@ -9,14 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a67dfc93a9ac5fd479d1e43581f49711, type: 3}
-  m_Name: BlocksArray
+  m_Script: {fileID: 11500000, guid: d0277cc7630ba3d4ab21319abd154153, type: 3}
+  m_Name: RandomClickables
   m_EditorClassIdentifier: 
-  <BlocksData>k__BackingField:
+  <Name>k__BackingField: 
+  <ID>k__BackingField: 3
+  <BlockSprite>k__BackingField: {fileID: 21300000, guid: 637f6d2627b6480488bb22cc3d7638b7, type: 3}
+  <IsStatic>k__BackingField: 0
+  <MaxHP>k__BackingField: 1
+  <BlocksRange>k__BackingField:
   - {fileID: 11400000, guid: 2eb16fdbb3ff196408ed759886ceb855, type: 2}
+  - {fileID: 11400000, guid: befe0920c3146ed4a95f4d4e791b645e, type: 2}
   - {fileID: 11400000, guid: 798daaf016337e145923b0df313fc964, type: 2}
   - {fileID: 11400000, guid: c856bd495d99b9949a1abbe5531dd7ad, type: 2}
-  - {fileID: 11400000, guid: f3c570d44618223419f929a2e96c3596, type: 2}
-  - {fileID: 11400000, guid: befe0920c3146ed4a95f4d4e791b645e, type: 2}
   - {fileID: 11400000, guid: 00ee499c53983a44e81a729711bc71f9, type: 2}
-  populateBlocksArray: 0

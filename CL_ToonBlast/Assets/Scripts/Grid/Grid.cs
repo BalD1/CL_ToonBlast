@@ -29,7 +29,7 @@ public class Grid<TGridObject>
             for (int x = 0; x < width; x++)
             {
                 //CreateText.CreateWorldText($"{x}, {y}", GetWorldPosition(x,y) + new Vector3(cellSize * .5f, cellSize * .5f), 10);
-                gridArray[y,x] = createGridObject(y,x);
+                gridArray[x,y] = createGridObject(x,y);
             }
         }
 
@@ -44,7 +44,7 @@ public class Grid<TGridObject>
     /// <returns>World Position in <see cref="Vector3"/></returns>
     public Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(y,x) * cellSize + originPosition;
+        return new Vector3(x,y) * cellSize + originPosition;
     }
 
     /// <summary>
@@ -56,9 +56,8 @@ public class Grid<TGridObject>
     /// <param name="y"></param>
     public void GetXY(Vector3 worldPosition, out int x, out int y)
     {
-        y = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
-        x = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-        x = width - x - 1;
+        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
+        y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
     }
 
     /// <summary>
@@ -72,7 +71,7 @@ public class Grid<TGridObject>
     {
         if (IsOutOfBounds(x, y)) return;
  
-        gridArray[width - x - 1, y] = value;
+        gridArray[x, y] = value;
         
         D_onGridValueChanged?.Invoke(x, y);
     }
@@ -99,7 +98,7 @@ public class Grid<TGridObject>
     {
         if (IsOutOfBounds(x, y)) return default;
 
-        return gridArray[width - x - 1, y];
+        return gridArray[x, y];
     }
     /// <summary>
     /// Get the value of the cell in <paramref name="worldPosition"/> position

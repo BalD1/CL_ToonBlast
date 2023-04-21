@@ -6,15 +6,17 @@ public class GridBlock : MonoBehaviour
 {
     [field: SerializeField] public SO_BasePuzzleBlockData BlockData { get; private set; }
 
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [field: SerializeField] public SpriteRenderer SpriteRenderer { get; private set; }
 
     [field: SerializeField, ReadOnly] public int CurrentHP { get; private set; }
 
     public bool wasChecked;
 
+    private bool isTweening;
+
     private void Reset()
     {
-        spriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer = this.GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -24,8 +26,25 @@ public class GridBlock : MonoBehaviour
 
     public void SetData(SO_BasePuzzleBlockData _blockData)
     {
-        BlockData = _blockData;
-        spriteRenderer.sprite = _blockData.BlockSprite;
+        SO_RandomBlock rand = _blockData as SO_RandomBlock;
+        if (rand != null) BlockData = rand.BlocksRange.RandomElement();
+        else BlockData = _blockData;
+
+        SpriteRenderer.sprite = BlockData.BlockSprite;
+    }
+
+    public void OnCantClickFeedback()
+    {
+        if (isTweening) return;
+
+        isTweening = true;
+        this.SpriteRenderer.sortingOrder++;
+        this.gameObject.LeanScale(this.transform.localScale * 1.25f, .15f).setLoopPingPong(1).setEaseInOutCirc();
+        LeanTween.rotateZ(this.gameObject, 45, .15f).setFrom(0).setLoopPingPong(1).setEaseInOutCirc().setOnComplete(() =>
+        {
+            this.SpriteRenderer.sortingOrder--;
+            isTweening = false;
+        });
     }
 
     public void Damage(int damage = 1)
@@ -36,6 +55,14 @@ public class GridBlock : MonoBehaviour
 
     private void OnDeath()
     {
-        Destroy(this.gameObject);
+        LeanTween.scale(this.gameObject, Vector3.zero, .1f).setOnComplete( () => Destroy(this.gameObject));
+        
+    }
+
+    public void SetName(int x, int y)
+    {
+#if UNITY_EDITOR
+        this.gameObject.name = BlockData.Name + $" [{x}, {y}]";
+#endif
     }
 }
